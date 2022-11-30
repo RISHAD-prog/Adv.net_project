@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Biddanondo.Models.CollectionModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            RestaurantName
+        </th>
+        <th>
+            PreservationTime
+        </th>
+        <th>
+            Location
+        </th>
+        <th>
+            RestaurantId
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        foreach (var new_item in ViewBag.restaurants)
+        {
+            if (item.RestaurantId == new_item.Id)
+            {
+                <tr>
+                    <th>
+                        @item.RestaurantName
+                    </th>
+                    <th>
+                        @item.PreservationTime
+                    </th>
+                    <th>
+                        @item.Location
+                    </th>
+                    <th>
+                        @item.RestaurantId
+                    </th>
+                    <td>
+                    </td>
+                </tr>
+            }
+
+        }
+
+    }
+
+</table>
+<a href="/Restaurant/Dashboard" class="btn btn-info">Dashboard</a><br /><br />
+<a href="/Restaurant/Logout" class="btn btn-danger">Logout</a>

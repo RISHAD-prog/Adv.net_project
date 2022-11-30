@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BiddanondoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Collection">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RestaurantName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PreservationTime" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Items" Relationship="Self.FK_Items_Collections" FromRole="Collections" ToRole="Items" />
+    <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="RestaurantId" Type="Int32" />
+    <NavigationProperty Name="Restaurant" Relationship="BiddanondoModel.FK_Collections_Restaurants" FromRole="Collection" ToRole="Restaurant" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Items" Relationship="Self.FK_Items_Employees" FromRole="Employees" ToRole="Items" />
+    <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RestaurantId" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Collection" Relationship="Self.FK_Items_Collections" FromRole="Items" ToRole="Collections" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Items_Employees" FromRole="Items" ToRole="Employees" />
+    <Property Name="RestaurantName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EmployeeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_Items_Collections">
+    <End Role="Collections" Type="Self.Collection" Multiplicity="1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Collections">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="RestaurantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Items_Employees">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BiddanondoEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Collections" EntityType="Self.Collection" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Items" EntityType="Self.Item" />
+    <AssociationSet Name="FK_Items_Collections" Association="Self.FK_Items_Collections">
+      <End Role="Collections" EntitySet="Collections" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Items_Employees" Association="Self.FK_Items_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <EntitySet Name="Restaurants" EntityType="BiddanondoModel.Restaurant" />
+    <AssociationSet Name="FK_Collections_Restaurants" Association="BiddanondoModel.FK_Collections_Restaurants">
+      <End Role="Restaurant" EntitySet="Restaurants" />
+      <End Role="Collection" EntitySet="Collections" />
+    </AssociationSet>
+    <EntitySet Name="Admins" EntityType="BiddanondoModel.Admin" />
+  </EntityContainer>
+  <EntityType Name="Restaurant">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RestaurantName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Location" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Collections" Relationship="BiddanondoModel.FK_Collections_Restaurants" FromRole="Restaurant" ToRole="Collection" />
+    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_Collections_Restaurants">
+    <End Type="BiddanondoModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
+    <End Type="BiddanondoModel.Collection" Role="Collection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurant">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Collection">
+        <PropertyRef Name="RestaurantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

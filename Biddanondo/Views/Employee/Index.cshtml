@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Biddanondo.Models.ItemModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    foreach(var new_item in ViewBag.Product){
+        if(item.EmployeeName==new_item.EmployeeName){
+             <tr>
+
+                 <td>
+                  @item.RestaurantName
+                 </td>
+                 <td>
+                  @new_item.EmployeeName
+                 </td>
+                 <td>
+                  @item.Location
+                 </td>
+                 <td>
+                 </td>
+             </tr>
+        }
+                    
+    }
+    
+}
+
+</table>
+<a href="/Employee/Order"class="btn btn-danger" >Collect Request</a><br /><br />
+<a href="/Employee/Logout"class="btn btn-danger" >Logout</a>
